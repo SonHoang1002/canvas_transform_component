@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("_isShowColorPicker: $_isShowColorPicker");
     final canvasEvents = context.canvasEventsCubitWatch;
     //
 
@@ -156,50 +157,50 @@ class _HomePageState extends State<HomePage> {
         body: Stack(
           clipBehavior: Clip.none,
           children: [
-            /// Canvas Background
-            ValueListenableBuilder(
-              valueListenable: transformationController,
-              builder: (_, transform, child) {
-                return Positioned(
-                  left: transform.getTranslation().x + kSidebarWidth,
-                  top: transform.getTranslation().y + kTopbarHeight,
-                  child: Container(
-                    width:
-                        canvasState.size.width * transform.getMaxScaleOnAxis(),
-                    height:
-                        canvasState.size.height * transform.getMaxScaleOnAxis(),
-                    foregroundDecoration: BoxDecoration(
-                      border:
-                          !canvasState.hidden
-                              ? null
-                              : Border.all(
-                                color: Colors.grey,
-                                strokeAlign: BorderSide.strokeAlignOutside,
-                                width: 2,
-                              ),
-                      borderRadius: BorderRadius.circular(1),
-                    ),
-                    decoration: BoxDecoration(
-                      color: canvasState.hidden ? null : canvasState.color,
-                      border:
-                          !canvasState.hidden
-                              ? null
-                              : Border.all(
-                                color: Colors.grey,
-                                strokeAlign: BorderSide.strokeAlignOutside,
-                              ),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black45,
-                          blurRadius: 24,
-                          blurStyle: BlurStyle.outer,
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+            // /// Canvas Background
+            // ValueListenableBuilder(
+            //   valueListenable: transformationController,
+            //   builder: (_, transform, child) {
+            //     return Positioned(
+            //       left: transform.getTranslation().x + kSidebarWidth,
+            //       top: transform.getTranslation().y + kTopbarHeight,
+            //       child: Container(
+            //         width:
+            //             canvasState.size.width * transform.getMaxScaleOnAxis(),
+            //         height:
+            //             canvasState.size.height * transform.getMaxScaleOnAxis(),
+            //         foregroundDecoration: BoxDecoration(
+            //           border:
+            //               !canvasState.hidden
+            //                   ? null
+            //                   : Border.all(
+            //                     color: Colors.grey,
+            //                     strokeAlign: BorderSide.strokeAlignOutside,
+            //                     width: 2,
+            //                   ),
+            //           borderRadius: BorderRadius.circular(1),
+            //         ),
+            //         decoration: BoxDecoration(
+            //           color: canvasState.hidden ? null : canvasState.color,
+            //           border:
+            //               !canvasState.hidden
+            //                   ? null
+            //                   : Border.all(
+            //                     color: Colors.grey,
+            //                     strokeAlign: BorderSide.strokeAlignOutside,
+            //                   ),
+            //           boxShadow: const [
+            //             BoxShadow(
+            //               color: Colors.black45,
+            //               blurRadius: 24,
+            //               blurStyle: BlurStyle.outer,
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     );
+            //   },
+            // ),
 
             /// Components and Controllers
             Padding(
@@ -217,32 +218,33 @@ class _HomePageState extends State<HomePage> {
                           clipBehavior: Clip.none,
                           children: [
                             // unselect all
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  context.selectedCubit.clear();
-                                  context.hoveredCubit.clear();
-                                  _isShowColorPicker = false;
-                                });
-                              },
-                              child: Container(
-                                width: mqSize.width,
-                                height: mqSize.height,
-                                color: Colors.transparent,
-                              ),
-                            ),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     setState(() {
+                            //       context.selectedCubit.clear();
+                            //       context.hoveredCubit.clear();
+                            //       _isShowColorPicker = false;
+                            //     });
+                            //   },
+                            //   child: Container(
+                            //     width: mqSize.width,
+                            //     height: mqSize.height,
+                            //     color: Colors.transparent,
+                            //   ),
+                            // ),
+
                             // components label
-                            ...components
-                                .where(
-                                  (element) =>
-                                      element.type == ComponentType.frame,
-                                )
-                                .map((e) {
-                                  return buildComponentLabel(
-                                    e,
-                                    canvasState.color,
-                                  );
-                                }),
+                            // ...components
+                            //     .where(
+                            //       (element) =>
+                            //           element.type == ComponentType.frame,
+                            //     )
+                            //     .map((e) {
+                            //       return buildComponentLabel(
+                            //         e,
+                            //         canvasState.color,
+                            //       );
+                            //     }),
 
                             // components
                             ValueListenableBuilder(
@@ -287,88 +289,88 @@ class _HomePageState extends State<HomePage> {
 
                             // selected controller(s) (should be at the front of every
                             // controllers)
-                            BlocBuilder<SelectedCubit, Set<int>>(
-                              builder: (context, state) {
-                                return Stack(
-                                  children:
-                                      state.indexed
-                                          .map(
-                                            (ele) => ControllerWidget(ele.$2),
-                                          )
-                                          .toList(),
-                                );
-                              },
-                            ),
+                            // BlocBuilder<SelectedCubit, Set<int>>(
+                            //   builder: (context, state) {
+                            //     return Stack(
+                            //       children:
+                            //           state.indexed
+                            //               .map(
+                            //                 (ele) => ControllerWidget(ele.$2),
+                            //               )
+                            //               .toList(),
+                            //     );
+                            //   },
+                            // ),
                             // components
-                            if (canvasEvents.containsAny({
-                              CanvasEvent.editingText,
-                            }))
-                              BlocBuilder<ComponentsCubit, List<ComponentData>>(
-                                builder: (context, components) {
-                                  return BlocBuilder<SelectedCubit, Set<int>>(
-                                    builder: (context, state) {
-                                      return ValueListenableBuilder(
-                                        valueListenable:
-                                            transformationController,
-                                        builder:
-                                            (_, transform2, __) => Stack(
-                                              clipBehavior: Clip.none,
-                                              children: [
-                                                ...state
-                                                    .where(
-                                                      (e) =>
-                                                          // ignore: avoid-unsafe-collection-methods
-                                                          components[e].type ==
-                                                          ComponentType.text,
-                                                    )
-                                                    .map((e) {
-                                                      // ignore: avoid-unsafe-collection-methods
-                                                      final component =
-                                                          components[e];
+                            // if (canvasEvents.containsAny({
+                            //   CanvasEvent.editingText,
+                            // }))
+                            //   BlocBuilder<ComponentsCubit, List<ComponentData>>(
+                            //     builder: (context, components) {
+                            //       return BlocBuilder<SelectedCubit, Set<int>>(
+                            //         builder: (context, state) {
+                            //           return ValueListenableBuilder(
+                            //             valueListenable:
+                            //                 transformationController,
+                            //             builder:
+                            //                 (_, transform2, __) => Stack(
+                            //                   clipBehavior: Clip.none,
+                            //                   children: [
+                            //                     ...state
+                            //                         .where(
+                            //                           (e) =>
+                            //                               // ignore: avoid-unsafe-collection-methods
+                            //                               components[e].type ==
+                            //                               ComponentType.text,
+                            //                         )
+                            //                         .map((e) {
+                            //                           // ignore: avoid-unsafe-collection-methods
+                            //                           final component =
+                            //                               components[e];
 
-                                                      return component.hidden
-                                                          ? const SizedBox.shrink()
-                                                          : buildComponentWidget(
-                                                            e,
-                                                            component,
-                                                            transform2,
-                                                            editText: true,
-                                                          );
-                                                    }),
-                                              ],
-                                            ),
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
+                            //                           return component.hidden
+                            //                               ? const SizedBox.shrink()
+                            //                               : buildComponentWidget(
+                            //                                 e,
+                            //                                 component,
+                            //                                 transform2,
+                            //                                 editText: true,
+                            //                               );
+                            //                         }),
+                            //                   ],
+                            //                 ),
+                            //           );
+                            //         },
+                            //       );
+                            //     },
+                            //   ),
 
-                            if (kDebugMode)
-                              BlocBuilder<DebugPointCubit, List<Offset>>(
-                                builder:
-                                    (_, state) => Stack(
-                                      children: [
-                                        ...state.map((e) {
-                                          final component = e;
-                                          final scale =
-                                              transform.getMaxScaleOnAxis();
-                                          return Positioned(
-                                            left:
-                                                transform.getTranslation().x +
-                                                component.dx * scale,
-                                            top:
-                                                transform.getTranslation().y +
-                                                component.dy * scale,
-                                            child: Container(
-                                              width: 5,
-                                              height: 5,
-                                              color: Colors.red,
-                                            ),
-                                          );
-                                        }),
-                                      ],
-                                    ),
-                              ),
+                            // if (kDebugMode)
+                            //   BlocBuilder<DebugPointCubit, List<Offset>>(
+                            //     builder:
+                            //         (_, state) => Stack(
+                            //           children: [
+                            //             ...state.map((e) {
+                            //               final component = e;
+                            //               final scale =
+                            //                   transform.getMaxScaleOnAxis();
+                            //               return Positioned(
+                            //                 left:
+                            //                     transform.getTranslation().x +
+                            //                     component.dx * scale,
+                            //                 top:
+                            //                     transform.getTranslation().y +
+                            //                     component.dy * scale,
+                            //                 child: Container(
+                            //                   width: 5,
+                            //                   height: 5,
+                            //                   color: Colors.red,
+                            //                 ),
+                            //               );
+                            //             }),
+                            //           ],
+                            //         ),
+                            //   ),
                           ],
                         ),
                   ),
@@ -519,13 +521,13 @@ class _HomePageState extends State<HomePage> {
                       /// Left Sidebar
                       const LeftSidebar(),
                       const Expanded(child: SizedBox.shrink()),
-                      RightSidebar(
-                        toggleColorPicker: () {
-                          setState(() {
-                            _isShowColorPicker = !_isShowColorPicker;
-                          });
-                        },
-                      ),
+                      // RightSidebar(
+                      //   toggleColorPicker: () {
+                      //     setState(() {
+                      //       _isShowColorPicker = !_isShowColorPicker;
+                      //     });
+                      //   },
+                      // ),
                     ],
                   ),
                 ),
@@ -533,116 +535,115 @@ class _HomePageState extends State<HomePage> {
             ),
 
             /// Color picker
-            if (_isShowColorPicker)
-              Positioned(
-                top: kTopbarHeight + 4,
-                right: kSidebarWidth + 4,
-                child: Container(
-                  width: 240,
-                  height: 320,
-                  decoration: BoxDecoration(
-                    color: colorScheme.surface,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: ColorPicker(
-                            color: canvasState.color,
-                            onColorChanged: (value) {
-                              context.canvasCubit.update(
-                                backgroundColor: value,
-                              );
-                            },
-                            padding: EdgeInsets.zero,
-                            wheelSquarePadding: 24,
-                            columnSpacing: 0,
-                            opacityTrackHeight: 10,
-                            opacityThumbRadius: 12,
-                            wheelWidth: 8,
-                            colorCodeHasColor: true,
-                            showColorCode: true,
-                            enableOpacity: true,
-                            enableShadesSelection: false,
-                            pickersEnabled: const {
-                              ColorPickerType.wheel: true,
-                              ColorPickerType.accent: false,
-                              ColorPickerType.primary: false,
-                              ColorPickerType.both: false,
-                              ColorPickerType.bw: false,
-                              ColorPickerType.custom: false,
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
+            // if (_isShowColorPicker)
+            //   Positioned(
+            //     top: kTopbarHeight + 4,
+            //     right: kSidebarWidth + 4,
+            //     child: Container(
+            //       width: 240,
+            //       height: 320,
+            //       decoration: BoxDecoration(
+            //         color: colorScheme.surface,
+            //         borderRadius: BorderRadius.circular(8),
+            //       ),
+            //       child: Padding(
+            //         padding: const EdgeInsets.all(8),
+            //         child: Column(
+            //           children: [
+            //             Expanded(
+            //               child: ColorPicker(
+            //                 color: canvasState.color,
+            //                 onColorChanged: (value) {
+            //                   context.canvasCubit.update(
+            //                     backgroundColor: value,
+            //                   );
+            //                 },
+            //                 padding: EdgeInsets.zero,
+            //                 wheelSquarePadding: 24,
+            //                 columnSpacing: 0,
+            //                 opacityTrackHeight: 10,
+            //                 opacityThumbRadius: 12,
+            //                 wheelWidth: 8,
+            //                 colorCodeHasColor: true,
+            //                 showColorCode: true,
+            //                 enableOpacity: true,
+            //                 enableShadesSelection: false,
+            //                 pickersEnabled: const {
+            //                   ColorPickerType.wheel: true,
+            //                   ColorPickerType.accent: false,
+            //                   ColorPickerType.primary: false,
+            //                   ColorPickerType.both: false,
+            //                   ColorPickerType.bw: false,
+            //                   ColorPickerType.custom: false,
+            //                 },
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   ),
             /// Handle pointer outside canvas
-            Positioned(
-              left: 0,
-              width: kSidebarWidth,
-              top: 0,
-              bottom: 0,
-              child: TransparentPointer(
-                child: MouseRegion(
-                  onEnter: (event) {
-                    context.read<CanvasEventsCubit>().add(
-                      CanvasEvent.normalCursor,
-                    );
-                  },
-                  onHover: (event) {
-                    context.read<CanvasEventsCubit>().add(
-                      CanvasEvent.normalCursor,
-                    );
-                  },
-                ),
-              ),
-            ),
-            Positioned(
-              right: kSidebarWidth,
-              left: kSidebarWidth,
-              top: 0,
-              height: kTopbarHeight,
-              child: TransparentPointer(
-                child: MouseRegion(
-                  onEnter: (event) {
-                    context.read<CanvasEventsCubit>().add(
-                      CanvasEvent.normalCursor,
-                    );
-                  },
-                  onHover: (event) {
-                    context.read<CanvasEventsCubit>().add(
-                      CanvasEvent.normalCursor,
-                    );
-                  },
-                ),
-              ),
-            ),
-            Positioned(
-              right: 0,
-              width: kSidebarWidth,
-              top: 0,
-              bottom: 0,
-              child: TransparentPointer(
-                child: MouseRegion(
-                  onEnter: (event) {
-                    context.read<CanvasEventsCubit>().add(
-                      CanvasEvent.normalCursor,
-                    );
-                  },
-                  onHover: (event) {
-                    context.read<CanvasEventsCubit>().add(
-                      CanvasEvent.normalCursor,
-                    );
-                  },
-                ),
-              ),
-            ),
+            // Positioned(
+            //   left: 0,
+            //   width: kSidebarWidth,
+            //   top: 0,
+            //   bottom: 0,
+            //   child: TransparentPointer(
+            //     child: MouseRegion(
+            //       onEnter: (event) {
+            //         context.read<CanvasEventsCubit>().add(
+            //           CanvasEvent.normalCursor,
+            //         );
+            //       },
+            //       onHover: (event) {
+            //         context.read<CanvasEventsCubit>().add(
+            //           CanvasEvent.normalCursor,
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
+            // Positioned(
+            //   right: kSidebarWidth,
+            //   left: kSidebarWidth,
+            //   top: 0,
+            //   height: kTopbarHeight,
+            //   child: TransparentPointer(
+            //     child: MouseRegion(
+            //       onEnter: (event) {
+            //         context.read<CanvasEventsCubit>().add(
+            //           CanvasEvent.normalCursor,
+            //         );
+            //       },
+            //       onHover: (event) {
+            //         context.read<CanvasEventsCubit>().add(
+            //           CanvasEvent.normalCursor,
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
+            // Positioned(
+            //   right: 0,
+            //   width: kSidebarWidth,
+            //   top: 0,
+            //   bottom: 0,
+            //   child: TransparentPointer(
+            //     child: MouseRegion(
+            //       onEnter: (event) {
+            //         context.read<CanvasEventsCubit>().add(
+            //           CanvasEvent.normalCursor,
+            //         );
+            //       },
+            //       onHover: (event) {
+            //         context.read<CanvasEventsCubit>().add(
+            //           CanvasEvent.normalCursor,
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
 
             /// Custom pointer
             IgnorePointer(

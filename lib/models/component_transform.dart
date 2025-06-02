@@ -26,59 +26,57 @@ class ComponentTransform extends Equatable {
     bool flipY = false,
   }) => ComponentTransform(edges.tl, edges.size, edges.angle, flipX, flipY);
 
-  static ComponentTransform fromEdgesOld(
-    ({Offset bl, Offset br, Offset tl, Offset tr}) edges, {
-    bool flipX = false,
-    bool flipY = false,
-    bool keepOrigin = false,
-  }) {
-    final topLeft = edges.tl;
-    final size = Size(
-      (topLeft - edges.tr).distance,
-      (topLeft - edges.bl).distance,
-    );
-    final angle = atan2(edges.tr.dy - topLeft.dy, edges.tr.dx - topLeft.dx);
-    final newEdges =
-        !keepOrigin
-            ? rotateRect(
-              Rect.fromLTWH(topLeft.dx, topLeft.dy, size.width, size.height),
-              0,
-              Offset.zero,
-            )
-            : rotateRect(
-              Rect.fromLTWH(0, 0, size.width, size.height),
-              0,
-              Offset.zero,
-            );
-    var newComponent = ComponentTransform(
-      newEdges.tl,
-      size,
-      angle + (flipX ? pi : 0),
-      flipX,
-      flipY,
-    );
-    if (keepOrigin) {
-      final difference = topLeft - newComponent.rotatedEdges.tl;
-      newComponent = ComponentTransform(
-        newEdges.tl + difference,
-        size,
-        angle + (flipX ? pi : 0),
-        flipX,
-        flipY,
-      );
-    }
-    print('CORRECTEDRECT:');
-    print(newComponent.rotatedEdges.tl);
-
-    ///----------------------------------------
-    print(
-      Rect.fromLTWH(topLeft.dx, topLeft.dy, size.width, size.height).topLeft,
-    );
-    print(newEdges.tl);
-
-    ///----------------------------------------
-    return newComponent;
-  }
+  // static ComponentTransform fromEdgesOld(
+  //   ({Offset bl, Offset br, Offset tl, Offset tr}) edges, {
+  //   bool flipX = false,
+  //   bool flipY = false,
+  //   bool keepOrigin = false,
+  // }) {
+  //   final topLeft = edges.tl;
+  //   final size = Size(
+  //     (topLeft - edges.tr).distance,
+  //     (topLeft - edges.bl).distance,
+  //   );
+  //   final angle = atan2(edges.tr.dy - topLeft.dy, edges.tr.dx - topLeft.dx);
+  //   final newEdges =
+  //       !keepOrigin
+  //           ? rotateRect(
+  //             Rect.fromLTWH(topLeft.dx, topLeft.dy, size.width, size.height),
+  //             0,
+  //             Offset.zero,
+  //           )
+  //           : rotateRect(
+  //             Rect.fromLTWH(0, 0, size.width, size.height),
+  //             0,
+  //             Offset.zero,
+  //           );
+  //   var newComponent = ComponentTransform(
+  //     newEdges.tl,
+  //     size,
+  //     angle + (flipX ? pi : 0),
+  //     flipX,
+  //     flipY,
+  //   );
+  //   if (keepOrigin) {
+  //     final difference = topLeft - newComponent.rotatedEdges.tl;
+  //     newComponent = ComponentTransform(
+  //       newEdges.tl + difference,
+  //       size,
+  //       angle + (flipX ? pi : 0),
+  //       flipX,
+  //       flipY,
+  //     );
+  //   }
+  //   print('CORRECTEDRECT:');
+  //   print(newComponent.rotatedEdges.tl);
+  //   ///----------------------------------------
+  //   print(
+  //     Rect.fromLTWH(topLeft.dx, topLeft.dy, size.width, size.height).topLeft,
+  //   );
+  //   print(newEdges.tl);
+  //   ///----------------------------------------
+  //   return newComponent;
+  // }
 
   Rect get rect => Rect.fromLTWH(pos.dx, pos.dy, size.width, size.height);
 

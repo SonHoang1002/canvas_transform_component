@@ -22,7 +22,6 @@ part 'widgets/custom_cursor_widget.dart';
 part 'widgets/home_page.dart';
 part 'widgets/left_sidebar.dart';
 part 'widgets/right_sidebar.dart';
-part 'widgets/selector_widget.dart';
 part 'widgets/top_bar.dart';
 
 void main() async {
